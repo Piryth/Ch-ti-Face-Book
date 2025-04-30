@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "521959694805",
+    "project_id": "chtifacebook",
+    "storage_bucket": "chtifacebook.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:521959694805:android:5917b0be2a1ff3f6811d5c",
+        "android_client_info": {
+          "package_name": "com.example.chti_face_book"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAEEt-cdYFP49ED6wVmFTfzieVbr6nfyGA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
