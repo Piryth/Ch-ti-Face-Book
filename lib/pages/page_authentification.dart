@@ -10,30 +10,38 @@ class PageAuthentification extends StatefulWidget {
 enum View { createAccount, logIn }
 
 class _PageAuthentification extends State<PageAuthentification> {
-
   final TextEditingController _mailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _surnameController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
 
-  final ServiceAuthentification _serviceAuthentification = ServiceAuthentification();
+  final ServiceAuthentification _serviceAuthentification =
+      ServiceAuthentification();
 
   bool _accountExists = true;
-
-  View currentView = View.createAccount;
 
   // Methods
 
   _handleAuthentification() async {
     if (_accountExists) {
       await _serviceAuthentification.signIn(
-          email: _mailController.text, password: _passwordController.text);
+        email: _mailController.text,
+        password: _passwordController.text,
+      );
       return;
     }
-    await _serviceAuthentification.createAccount(email: _mailController.text,
-        password: _mailController.text,
-        surname: _surnameController.text,
-        name: _nameController.text);
+    await _serviceAuthentification.createAccount(
+      email: _mailController.text,
+      password: _mailController.text,
+      surname: _surnameController.text,
+      name: _nameController.text,
+    );
+  }
+
+  _onSelectionChange(Set<bool> selection) {
+    setState(() {
+      _accountExists = selection.first;
+    });
   }
 
   // Lifecycle
@@ -41,8 +49,10 @@ class _PageAuthentification extends State<PageAuthentification> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Chti Face Bouc"),
-          backgroundColor: Colors.lightBlueAccent),
+      appBar: AppBar(
+        title: Text("Chti Face Bouc"),
+        backgroundColor: Colors.lightBlueAccent,
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -50,42 +60,39 @@ class _PageAuthentification extends State<PageAuthentification> {
               Image.network(
                 "https://static.wikia.nocookie.net/brainrotnew/images/1/10/Bombardiro_Crocodilo.jpg",
               ),
-              SegmentedButton<View>(
-                segments: const <ButtonSegment<View>>[
-                  ButtonSegment<View>(
-                    value: View.createAccount,
+              SegmentedButton<bool>(
+                segments: const <ButtonSegment<bool>>[
+                  ButtonSegment<bool>(
+                    value: false,
                     label: Text("Créer un compte"),
                     icon: Icon(Icons.login),
                   ),
-                  ButtonSegment<View>(
-                    value: View.createAccount,
+                  ButtonSegment<bool>(
+                    value: true,
                     label: Text("Connexion"),
                     icon: Icon(Icons.login),
                   ),
                 ],
-                selected: {currentView},
-                onSelectionChanged: (Set<View> selection) {
-                  setState(() {
-                    selection.first;
-                  });
-                },
+                selected: {_accountExists},
+                onSelectionChanged: _onSelectionChange,
               ),
               Card(
                 child: Container(
                   child: Column(
-                    children: [TextField(
-                      decoration: InputDecoration(
-                        labelText: 'Mail',
-                        hintText: 'Please provide your email',
-                        prefixIcon: Icon(Icons.person),
-                        suffixIcon: Icon(Icons.check_circle),
-                        border: OutlineInputBorder(),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.blue),
+                    children: [
+                      TextField(
+                        decoration: InputDecoration(
+                          labelText: 'Mail',
+                          hintText: 'Please provide your email',
+                          prefixIcon: Icon(Icons.person),
+                          suffixIcon: Icon(Icons.check_circle),
+                          border: OutlineInputBorder(),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.blue),
+                          ),
                         ),
+                        controller: _mailController,
                       ),
-                      controller: _mailController,
-                    ),
                       TextField(
                         decoration: InputDecoration(
                           labelText: 'Password',
@@ -99,13 +106,13 @@ class _PageAuthentification extends State<PageAuthentification> {
                         ),
                         controller: _passwordController,
                       ),
-                      if(!_accountExists)
+                      if (!_accountExists)
                         Column(
                           children: [
                             TextField(
                               decoration: InputDecoration(
-                                labelText: 'Password',
-                                hintText: 'Please enter your password',
+                                labelText: 'Surnale',
+                                hintText: 'Please enter your surname',
                                 prefixIcon: Icon(Icons.password),
                                 suffixIcon: Icon(Icons.check_circle),
                                 border: OutlineInputBorder(),
@@ -113,12 +120,12 @@ class _PageAuthentification extends State<PageAuthentification> {
                                   borderSide: BorderSide(color: Colors.blue),
                                 ),
                               ),
-                              controller: _passwordController,
+                              controller: _surnameController,
                             ),
                             TextField(
                               decoration: InputDecoration(
-                                labelText: 'Password',
-                                hintText: 'Please enter your password',
+                                labelText: 'Name',
+                                hintText: 'Please enter your name',
                                 prefixIcon: Icon(Icons.password),
                                 suffixIcon: Icon(Icons.check_circle),
                                 border: OutlineInputBorder(),
@@ -126,21 +133,31 @@ class _PageAuthentification extends State<PageAuthentification> {
                                   borderSide: BorderSide(color: Colors.blue),
                                 ),
                               ),
-                              controller: _passwordController,
+                              controller: _nameController,
                             ),
                           ],
                         ),
                       TextButton(
-                          onPressed: () => {}, child: Text("Ch'ti parti !"))
+                        onPressed: _handleAuthentification,
+                        child: Text("Ch'ti parti !"),
+                      ),
                     ],
                   ),
                 ),
-              )
-
+              ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _mailController.dispose();
+    _passwordController.dispose();
+    _nameController.dispose();
+    _surnameController.dispose();
+    super.dispose();
   }
 }

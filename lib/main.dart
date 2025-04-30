@@ -1,5 +1,6 @@
 import 'package:chti_face_book/pages/page_accueil.dart';
 import 'package:chti_face_book/pages/page_authentification.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -22,7 +23,14 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: PageAuthentification(),
+      home: StreamBuilder<User?>(
+        stream: FirebaseAuth.instance.userChanges(),
+        builder: (BuildContext ctx, AsyncSnapshot snapshot) {
+          return snapshot.hasData ?
+          Center(child: PageAccueil()) :
+          Center(child: PageAuthentification());
+        },
+      ),
     );
   }
 }

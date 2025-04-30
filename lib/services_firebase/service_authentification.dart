@@ -8,7 +8,15 @@ class ServiceAuthentification {
     required String email,
     required String password,
   }) async {
-    return "";
+    try {
+      await instance.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      return email;
+    } catch (e) {
+      throw Exception('Failed to sign up: $e');
+    }
   }
 
   Future<String?> createAccount({
@@ -17,11 +25,17 @@ class ServiceAuthentification {
     required String surname,
     required String name,
   }) async {
-    return "";
+    await instance
+        .createUserWithEmailAndPassword(email: email, password: password);
+    return email;
   }
 
-  Future<bool> signOut() async {
-    return false;
+  Future signOut() async {
+    try {
+      await instance.signOut();
+    } catch (e) {
+      throw Exception('Failed to logout: $e');
+    }
   }
 
   String? get myId => instance.currentUser?.uid;
