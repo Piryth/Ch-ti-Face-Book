@@ -1,5 +1,6 @@
 import 'package:chti_face_book/pages/page_accueil.dart';
 import 'package:chti_face_book/pages/page_authentification.dart';
+import 'package:chti_face_book/pages/page_navigation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
         stream: FirebaseAuth.instance.userChanges(),
         builder: (BuildContext ctx, AsyncSnapshot snapshot) {
           return snapshot.hasData ?
-          Center(child: PageAccueil()) :
+          Center(child: PageNavigation()) :
           Center(child: PageAuthentification());
         },
       ),

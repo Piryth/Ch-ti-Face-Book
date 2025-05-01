@@ -10,19 +10,7 @@ class PageAccueil extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-            title: Text("Chti Face Bouc"),
-            backgroundColor: Colors.blue,
-            actions: <Widget>[
-              IconButton(
-                onPressed: () {
-                  _serviceAuthentification.signOut();
-                },
-                icon: Icon(Icons.logout),
-                color: Colors.white,
-              )
-              ]
-        )
+        
     );
   }
 }

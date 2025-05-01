@@ -1,33 +1,37 @@
+import 'package:chti_face_book/services_firebase/service_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class ServiceAuthentification {
+  final FirebaseAuth instance = FirebaseAuth.instance;
 
-  final instance = FirebaseAuth.instance;
-
-  Future<String?> signIn({
-    required String email,
-    required String password,
-  }) async {
+  Future signIn({required String email, required String password}) async {
     try {
       await instance.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
-      return email;
     } catch (e) {
-      throw Exception('Failed to sign up: $e');
+      throw Exception('Failed to sign in: $e');
     }
   }
 
-  Future<String?> createAccount({
+  Future createAccount({
     required String email,
     required String password,
     required String surname,
     required String name,
   }) async {
-    await instance
-        .createUserWithEmailAndPassword(email: email, password: password);
-    return email;
+    try {
+      UserCredential userCredential = await instance
+          .createUserWithEmailAndPassword(email: email, password: password);
+
+      await ServiceFirestore().addMember(
+        id: userCredential.user!.uid,
+        data: {'email': email, 'surname': surname, 'name': name},
+      );
+    } catch (e) {
+      throw Exception('Failed to sign up: $e');
+    }
   }
 
   Future signOut() async {
@@ -40,4 +44,11 @@ class ServiceAuthentification {
 
   String? get myId => instance.currentUser?.uid;
 
+  bool isMe(String id) {
+    if (myId == null) {
+      return false;
+    } else {
+      return myId == id;
+    }
+  }
 }
