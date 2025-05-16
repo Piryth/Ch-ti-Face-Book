@@ -1,11 +1,13 @@
 import 'package:chti_face_book/services_firebase/service_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 
 class ServiceAuthentification {
   final FirebaseAuth instance = FirebaseAuth.instance;
 
   Future signIn({required String email, required String password}) async {
     try {
+      debugPrint("CREDENTIALS: $email $password");
       await instance.signInWithEmailAndPassword(
         email: email,
         password: password,
