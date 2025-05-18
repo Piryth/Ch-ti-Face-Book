@@ -3,7 +3,8 @@ import 'dart:io';
 import 'package:chti_face_book/services_firebase/service_authentification.dart';
 import 'package:chti_face_book/services_firebase/service_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:chti_face_book/models/constants.dart';
+import 'package:chti_face_book/util/constants.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../models/membre.dart';
@@ -80,7 +81,7 @@ class ServiceFirestore {
     return true;
   }
 
-  postForMember(String memberId) => firestorePost.where(memberIdKey, isEqualTo: memberId).orderBy(dateKey, descending: true).snapshots();
+  postForMember(String memberId) => firestorePost.where(memberIdKey, isEqualTo: memberId).snapshots();
 
   allMembers() => firestoreMember.snapshots();
 
@@ -116,6 +117,55 @@ class ServiceFirestore {
     return firestorePost
         .doc(postId)
         .collection(commentCollectionKey)
+        .orderBy(dateKey, descending: true)
+        .snapshots();
+  }
+
+
+  sendNotification({
+    required String to,
+    required String from,
+    required String text,
+    required String postId,
+  }) async {
+    final date = DateTime.now().millisecondsSinceEpoch;
+    final memberId = ServiceAuthentification().myId;
+
+    if (memberId == null) return;
+
+    Map<String, dynamic> map = {
+      dateKey: date,
+      isReadKey: false,
+      fromKey: from,
+      textKey: text,
+      postIdKey: postId,
+    };
+
+    await firestoreMember
+        .doc(to)
+        .collection(notificationCollectionKey)
+        .doc()
+        .set(map);
+  }
+
+  markRead(DocumentReference reference) async {
+    try {
+      DocumentSnapshot documentSnapshot = await reference.get();
+
+      if (documentSnapshot.exists) {
+        bool currentIsRead = documentSnapshot.get(isReadKey) ?? false;
+
+        await reference.update({isReadKey: !currentIsRead});
+      }
+    } catch (e) {
+      debugPrintStack(label: 'Error toggling isRead: $e');
+    }
+  }
+
+  notificationForUser(String id) {
+    return firestoreMember
+        .doc(id)
+        .collection(notificationCollectionKey)
         .orderBy(dateKey, descending: true)
         .snapshots();
   }

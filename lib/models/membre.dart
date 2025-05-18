@@ -1,4 +1,4 @@
-import 'constants.dart';
+import '../util/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Membre {

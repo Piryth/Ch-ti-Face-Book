@@ -7,7 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-import '../models/constants.dart';
+import '../util/constants.dart';
 import '../models/post.dart';
 
 class ListeCommentaire extends StatelessWidget {

@@ -1,11 +1,11 @@
 import 'dart:math';
+import 'package:chti_face_book/services_firebase/service_authentification.dart';
 import 'package:chti_face_book/widgets/liste_commentaire.dart';
 import 'package:chti_face_book/widgets/post_content_widget.dart';
 import 'package:flutter/material.dart';
 
 import '../models/post.dart';
 import '../services_firebase/service_firestore.dart';
-import '../widgets/post_widget.dart';
 
 class PageDetailPost extends StatefulWidget {
   const PageDetailPost({
@@ -27,6 +27,13 @@ class _PostPageDetailState extends State<PageDetailPost> {
 
     if (comment.isNotEmpty) {
       ServiceFirestore().addComment(post: widget.post, text: comment);
+      ServiceFirestore().sendNotification(
+        from: ServiceAuthentification().myId!,
+        to: widget.post.member,
+        postId: widget.post.id,
+        text:
+        "Nouveau commentaire: ${widget.post.text.substring(0, min(20, widget.post.text.length))}...",
+      );
       _commentController.clear();
     }
   }
@@ -47,24 +54,25 @@ class _PostPageDetailState extends State<PageDetailPost> {
           spacing: 8,
           children: [
             PostContent(post: widget.post),
-            Padding(
-              padding: const EdgeInsets.all(8),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: _commentController,
-                      decoration: InputDecoration(
-                        labelText: "Commentaire",
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                  ),
-                  IconButton(onPressed: _addComment, icon: Icon(Icons.send)),
-                ],
+
+            ListeCommentaire(post: widget.post),
+          ],
+        ),
+      ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          children: [
+            Expanded(
+              child: TextField(
+                controller: _commentController,
+                decoration: InputDecoration(
+                  labelText: "Commentaire",
+                  border: OutlineInputBorder(),
+                ),
               ),
             ),
-            ListeCommentaire(post: widget.post),
+            IconButton(onPressed: _addComment, icon: Icon(Icons.send)),
           ],
         ),
       ),

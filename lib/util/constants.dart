@@ -26,6 +26,7 @@ String commentDateKey = 'date';
 String commentMemberIdKey = 'memberID';
 
 // Notification
+String textKey = "text";
 String fromKey = "from";
 String isReadKey = "read";
 String postIdKey = "postID";

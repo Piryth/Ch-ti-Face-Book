@@ -2,7 +2,9 @@ import 'package:chti_face_book/pages/page_accueil.dart';
 import 'package:chti_face_book/pages/page_authentification.dart';
 import 'package:chti_face_book/pages/page_ecrire_post.dart';
 import 'package:chti_face_book/pages/page_membres.dart';
+import 'package:chti_face_book/pages/page_notifications.dart';
 import 'package:chti_face_book/pages/page_profile.dart';
+import 'package:chti_face_book/widgets/avatar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -56,13 +58,20 @@ class _PageNavigationState extends State<PageNavigation> {
                 PageAccueil(),
                 PageMembre(),
                 PageEcrirePost(membre: membre),
-                const Center(child: Text('Notifications')),
+                PageNotifications(membre: membre),
                 PageProfil(membre: membre, fromNavigation: true),
               ];
 
               return Scaffold(
                 appBar: AppBar(
-                  title: Text(membre.fullname),
+                  leading: Padding(
+                    padding: EdgeInsets.all(8),
+                    child: Avatar(radius: 18, imageUrl: membre.profilePicture),
+                  ),
+                  title: Text(
+                    membre.fullname,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
                   backgroundColor: Theme.of(context).colorScheme.inversePrimary,
                   actions: [
                     IconButton(

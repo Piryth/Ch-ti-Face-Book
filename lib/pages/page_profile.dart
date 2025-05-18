@@ -10,7 +10,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-import '../models/constants.dart';
+import '../util/constants.dart';
 import '../models/membre.dart';
 
 class PageProfil extends StatefulWidget {
@@ -42,11 +42,14 @@ class _PageProfilState extends State<PageProfil> {
 
     if (!context.mounted) return;
 
-    ScaffoldMessenger.of(context)
-      ..removeCurrentSnackBar()
-      ..showSnackBar(
-        SnackBar(content: const Text("Profil modifié avec succès !")),
-      );
+    if(result == true) {
+      ScaffoldMessenger.of(context)
+        ..removeCurrentSnackBar()
+        ..showSnackBar(
+          SnackBar(content: const Text("Profil modifié avec succès !")),
+        );
+    }
+
   }
 
   @override
@@ -66,9 +69,12 @@ class _PageProfilState extends State<PageProfil> {
       body: StreamBuilder<QuerySnapshot>(
         stream: ServiceFirestore().postForMember(widget.membre.id),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-
-          if (!snapshot.hasData || snapshot.hasError || snapshot.connectionState == ConnectionState.waiting) {
+          if (!snapshot.hasData || snapshot.hasError) {
             return const EmptyBody();
+          }
+
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
           }
 
           final data = snapshot.data;
@@ -76,19 +82,11 @@ class _PageProfilState extends State<PageProfil> {
           final length = docs.length ?? 0;
 
           final isMe = ServiceAuthentification().isMe(widget.membre.id);
-          final indexToAdd = (isMe) ? 2 : 1;
+          final indexToAdd = isMe ? 2 : 1;
 
           return ListView.builder(
-            itemCount: length,
+            itemCount: length + indexToAdd,
             itemBuilder: (context, index) {
-              final doc = docs[index];
-
-              final Post post = Post(
-                reference: doc.reference,
-                id: doc.id,
-                map: doc.data() as Map<String, dynamic>,
-              );
-
               if (index == 0) {
                 return Column(
                   children: [
@@ -131,12 +129,16 @@ class _PageProfilState extends State<PageProfil> {
                           ],
                         ),
                         Stack(
-                          alignment: Alignment.bottomLeft,
+                          alignment: Alignment.bottomRight,
                           children: [
-                            Avatar(
-                              radius: 75,
-                              imageUrl: widget.membre.profilePicture,
+                            Padding(
+                              padding: EdgeInsets.all(8),
+                              child: Avatar(
+                                radius: 75,
+                                imageUrl: widget.membre.profilePicture,
+                              ),
                             ),
+
                             (isMe)
                                 ? BoutonCamera(
                                   membreId: widget.membre.id,
@@ -166,11 +168,17 @@ class _PageProfilState extends State<PageProfil> {
                   ],
                 );
               }
-
               if (index - indexToAdd >= 0) {
+                final doc = docs[index - indexToAdd];
+
+                final Post post = Post(
+                  reference: doc.reference,
+                  id: doc.id,
+                  map: doc.data() as Map<String, dynamic>,
+                );
                 return PostWidget(post: post, key: ValueKey(post.id));
               }
-              return const Center();
+              return const EmptyBody();
             },
           );
         },

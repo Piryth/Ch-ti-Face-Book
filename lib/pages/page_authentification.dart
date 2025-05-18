@@ -55,6 +55,7 @@ class _PageAuthentification extends State<PageAuthentification> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Chti Face Bouc"),
+        centerTitle: true,
         backgroundColor: Colors.lightBlueAccent,
       ),
       body: SafeArea(
@@ -63,15 +64,31 @@ class _PageAuthentification extends State<PageAuthentification> {
           child: Column(
             spacing: 12,
             children: [
-              CircleAvatar(
-                radius: min(MediaQuery.of(context).size.width * 0.35, 150),
-                child: ClipOval(
-                  child: Image(
-                    image: AssetImage('assets/logo.png'),
-                    fit: BoxFit.fill,
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      blurRadius: 15,
+                      color: Colors.grey,
+                      spreadRadius: 2,
+                      offset: Offset(8, 8)
+                    ),
+                  ],
+                ),
+                child:  CircleAvatar(
+                  radius: min(MediaQuery.of(context).size.width * 0.35, 150),
+                  child: ClipOval(
+                    child: Image(
+                      image: AssetImage('assets/logo.png'),
+                      fit: BoxFit.fill,
+                    ),
                   ),
                 ),
               ),
+
+
 
               SegmentedButton<bool>(
                 segments: const <ButtonSegment<bool>>[
@@ -100,8 +117,6 @@ class _PageAuthentification extends State<PageAuthentification> {
                         decoration: InputDecoration(
                           labelText: 'Mail',
                           hintText: 'Please provide your email',
-                          prefixIcon: Icon(Icons.person),
-                          suffixIcon: Icon(Icons.check_circle),
                           border: OutlineInputBorder(),
                           enabledBorder: OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.blue),
@@ -113,8 +128,6 @@ class _PageAuthentification extends State<PageAuthentification> {
                         decoration: InputDecoration(
                           labelText: 'Password',
                           hintText: 'Please enter your password',
-                          prefixIcon: Icon(Icons.password),
-                          suffixIcon: Icon(Icons.check_circle),
                           border: OutlineInputBorder(),
                           enabledBorder: OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.blue),
@@ -131,8 +144,6 @@ class _PageAuthentification extends State<PageAuthentification> {
                               decoration: InputDecoration(
                                 labelText: 'Surname',
                                 hintText: 'Please enter your surname',
-                                prefixIcon: Icon(Icons.password),
-                                suffixIcon: Icon(Icons.check_circle),
                                 border: OutlineInputBorder(),
                                 enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(color: Colors.blue),
@@ -144,8 +155,6 @@ class _PageAuthentification extends State<PageAuthentification> {
                               decoration: InputDecoration(
                                 labelText: 'Name',
                                 hintText: 'Please enter your name',
-                                prefixIcon: Icon(Icons.password),
-                                suffixIcon: Icon(Icons.check_circle),
                                 border: OutlineInputBorder(),
                                 enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(color: Colors.blue),
@@ -155,9 +164,9 @@ class _PageAuthentification extends State<PageAuthentification> {
                             ),
                           ],
                         ),
-                      TextButton(
+                      ElevatedButton(
                         onPressed: _handleAuthentification,
-                        child: Text("Ch'ti parti !"),
+                        child: Text("S'authentifier"),
                       ),
                     ],
                   ),

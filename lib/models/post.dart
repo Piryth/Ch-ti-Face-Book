@@ -1,6 +1,6 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:chti_face_book/models/constants.dart';
+import 'package:chti_face_book/util/constants.dart';
 
 class Post {
   DocumentReference reference;

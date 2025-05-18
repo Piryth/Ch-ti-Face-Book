@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:chti_face_book/models/constants.dart';
+import 'package:chti_face_book/util/constants.dart';
 import 'package:chti_face_book/services_firebase/service_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';

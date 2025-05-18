@@ -1,5 +1,5 @@
 import 'package:chti_face_book/models/commentaire.dart';
-import 'package:chti_face_book/models/formatage_date.dart';
+import 'package:chti_face_book/util/formatage_date.dart';
 import 'package:chti_face_book/models/membre.dart';
 import 'package:chti_face_book/services_firebase/service_firestore.dart';
 import 'package:chti_face_book/widgets/avatar.dart';
@@ -35,17 +35,14 @@ class CommentaireTile extends StatelessWidget {
             map: data.data() as Map<String, dynamic>,
           );
 
-          return Skeletonizer(
-            enabled: snapshot.connectionState == ConnectionState.waiting,
-            child: ListTile(
+          return ListTile(
               leading: Avatar(radius: 48, imageUrl: membre.profilePicture),
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [Text(membre.fullname), Text(FormatageDate().formatted(commentaire.date))],
               ),
               subtitle: Text(commentaire.text),
-            ),
-          );
+            );
         }
 
         return const EmptyBody();

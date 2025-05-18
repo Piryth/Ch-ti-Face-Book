@@ -1,7 +1,7 @@
 import 'package:chti_face_book/services_firebase/service_authentification.dart';
 import 'package:flutter/material.dart';
 
-import '../models/constants.dart';
+import '../util/constants.dart';
 import '../models/membre.dart';
 import '../services_firebase/service_firestore.dart';
 
@@ -40,7 +40,6 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
       hasChanged = true;
     }
     ServiceFirestore().updateMember(id: widget.membre.id, data: map);
-    debugPrint("User profile updated. Ready to pop");
     Navigator.pop(ctx, hasChanged);
   }
 
@@ -62,17 +61,17 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
         ],
       ),
       body: SingleChildScrollView(
-        child: Center(
-          child: Column(
+        padding: EdgeInsets.all(16),
+        child: Card(
+          
+          child: Padding(padding: EdgeInsets.all(8), child: Column(
+            spacing: 8,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TextField(
                 decoration: InputDecoration(
                   labelText: 'Name',
-
                   hintText: 'Please enter your name',
-                  prefixIcon: Icon(Icons.password),
-                  suffixIcon: Icon(Icons.check_circle),
                   border: OutlineInputBorder(),
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.blue),
@@ -84,8 +83,6 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                 decoration: InputDecoration(
                   labelText: 'Surname',
                   hintText: 'Please enter your surname',
-                  prefixIcon: Icon(Icons.password),
-                  suffixIcon: Icon(Icons.check_circle),
                   border: OutlineInputBorder(),
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.blue),
@@ -97,8 +94,6 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                 decoration: InputDecoration(
                   labelText: 'Description',
                   hintText: 'Please provide a description',
-                  prefixIcon: Icon(Icons.password),
-                  suffixIcon: Icon(Icons.check_circle),
                   border: OutlineInputBorder(),
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.blue),
@@ -108,13 +103,13 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
               ),
               ElevatedButton(
                 onPressed: () async {
+                  Navigator.pop(context, false);
                   await ServiceAuthentification().signOut();
-
                 },
                 child: const Text("Se déconnecter"),
               ),
             ],
-          ),
+          )),
         ),
       ),
     );
