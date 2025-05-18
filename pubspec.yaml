@@ -42,6 +42,7 @@ dependencies:
   intl: ^0.20.2
   fluttertoast: ^8.2.12
   shimmer: ^2.0.0
+  skeletonizer: ^1.4.3
 
 dev_dependencies:
   flutter_test:
@@ -95,3 +96,5 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+  assets:
+    - assets/

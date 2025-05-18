@@ -1,11 +1,13 @@
 import 'dart:io';
 
+import 'package:chti_face_book/services_firebase/service_authentification.dart';
 import 'package:chti_face_book/services_firebase/service_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:chti_face_book/models/constants.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../models/membre.dart';
+import '../models/post.dart';
 
 class ServiceFirestore {
   static final instance = FirebaseFirestore.instance;
@@ -78,8 +80,44 @@ class ServiceFirestore {
     return true;
   }
 
-  postForMember(String memberId) => firestorePost.where(memberIdKey, isEqualTo: memberId).snapshots();
+  postForMember(String memberId) => firestorePost.where(memberIdKey, isEqualTo: memberId).orderBy(dateKey, descending: true).snapshots();
 
   allMembers() => firestoreMember.snapshots();
+
+  addLike({required String memberID, required Post post}) async {
+    if (post.likes.contains(memberID)) {
+      post.reference.update({
+        likesKey: FieldValue.arrayRemove([memberID]),
+      });
+    } else {
+      post.reference.update({
+        likesKey: FieldValue.arrayUnion([memberID]),
+      });
+
+    }
+  }
+
+  addComment({required Post post, required String text}) async {
+    final memberId = ServiceAuthentification().myId;
+    final date = DateTime.now().millisecondsSinceEpoch;
+
+    if (memberId == null) return;
+
+    Map<String, dynamic> map = {
+      memberIdKey: memberId,
+      commentTextKey: text,
+      dateKey: date,
+    };
+
+    await post.reference.collection(commentCollectionKey).doc().set(map);
+  }
+
+  postComment(String postId) {
+    return firestorePost
+        .doc(postId)
+        .collection(commentCollectionKey)
+        .orderBy(dateKey, descending: true)
+        .snapshots();
+  }
 
 }

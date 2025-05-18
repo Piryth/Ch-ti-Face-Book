@@ -34,13 +34,6 @@ class _PageNavigationState extends State<PageNavigation> {
             BuildContext context,
             AsyncSnapshot<DocumentSnapshot> snapshot,
           ) {
-
-            final data = snapshot.data!;
-            final Membre membre = Membre(
-              reference: data.reference,
-              id: data.id,
-              map: data.data() as Map<String, dynamic>,
-            );
             if (snapshot.hasData) {
               final data = snapshot.data!;
 
@@ -53,7 +46,6 @@ class _PageNavigationState extends State<PageNavigation> {
                 );
               }
 
-              debugPrint("AAAAHHHHHHHH ${data.data().toString()}");
               final Membre membre = Membre(
                 reference: data.reference,
                 id: memberId,

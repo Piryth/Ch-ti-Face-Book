@@ -5,13 +5,13 @@ import 'package:chti_face_book/services_firebase/service_firestore.dart';
 import 'package:chti_face_book/widgets/avatar.dart';
 import 'package:chti_face_book/widgets/bouton_camera.dart';
 import 'package:chti_face_book/widgets/post_widget.dart';
+import 'package:chti_face_book/widgets/widget_vide.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import '../models/constants.dart';
 import '../models/membre.dart';
-import '../widgets/toastMessage.dart';
 
 class PageProfil extends StatefulWidget {
   final Membre membre;
@@ -66,6 +66,11 @@ class _PageProfilState extends State<PageProfil> {
       body: StreamBuilder<QuerySnapshot>(
         stream: ServiceFirestore().postForMember(widget.membre.id),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+
+          if (!snapshot.hasData || snapshot.hasError || snapshot.connectionState == ConnectionState.waiting) {
+            return const EmptyBody();
+          }
+
           final data = snapshot.data;
           final docs = data!.docs;
           final length = docs.length ?? 0;
@@ -163,7 +168,7 @@ class _PageProfilState extends State<PageProfil> {
               }
 
               if (index - indexToAdd >= 0) {
-                return PostWidget(post: post);
+                return PostWidget(post: post, key: ValueKey(post.id));
               }
               return const Center();
             },

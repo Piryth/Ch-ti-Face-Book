@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'dart:math';
+
 import 'package:chti_face_book/services_firebase/service_authentification.dart';
 import 'package:flutter/material.dart';
 
@@ -56,11 +59,20 @@ class _PageAuthentification extends State<PageAuthentification> {
       ),
       body: SafeArea(
         child: SingleChildScrollView(
+          padding: EdgeInsets.all(16),
           child: Column(
+            spacing: 12,
             children: [
-              Image.network(
-                "https://static.wikia.nocookie.net/brainrotnew/images/1/10/Bombardiro_Crocodilo.jpg",
+              CircleAvatar(
+                radius: min(MediaQuery.of(context).size.width * 0.35, 150),
+                child: ClipOval(
+                  child: Image(
+                    image: AssetImage('assets/logo.png'),
+                    fit: BoxFit.fill,
+                  ),
+                ),
               ),
+
               SegmentedButton<bool>(
                 segments: const <ButtonSegment<bool>>[
                   ButtonSegment<bool>(
@@ -78,71 +90,77 @@ class _PageAuthentification extends State<PageAuthentification> {
                 onSelectionChanged: _onSelectionChange,
               ),
               Card(
-                child: Column(
-                  children: [
-                    TextField(
-                      decoration: InputDecoration(
-                        labelText: 'Mail',
-                        hintText: 'Please provide your email',
-                        prefixIcon: Icon(Icons.person),
-                        suffixIcon: Icon(Icons.check_circle),
-                        border: OutlineInputBorder(),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.blue),
-                        ),
-                      ),
-                      controller: _mailController,
-                    ),
-                    TextField(
-                      decoration: InputDecoration(
-                        labelText: 'Password',
-                        hintText: 'Please enter your password',
-                        prefixIcon: Icon(Icons.password),
-                        suffixIcon: Icon(Icons.check_circle),
-                        border: OutlineInputBorder(),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.blue),
-                        ),
-                      ),
-                      obscureText: true,
-                      controller: _passwordController,
-                    ),
-                    if (!_accountExists)
-                      Column(
-                        children: [
-                          TextField(
-                            decoration: InputDecoration(
-                              labelText: 'Surname',
-                              hintText: 'Please enter your surname',
-                              prefixIcon: Icon(Icons.password),
-                              suffixIcon: Icon(Icons.check_circle),
-                              border: OutlineInputBorder(),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.blue),
-                              ),
-                            ),
-                            controller: _surnameController,
+                elevation: 8,
+                child: Padding(
+                  padding: EdgeInsets.all(8),
+                  child: Column(
+                    spacing: 12,
+                    children: [
+                      TextField(
+                        decoration: InputDecoration(
+                          labelText: 'Mail',
+                          hintText: 'Please provide your email',
+                          prefixIcon: Icon(Icons.person),
+                          suffixIcon: Icon(Icons.check_circle),
+                          border: OutlineInputBorder(),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.blue),
                           ),
-                          TextField(
-                            decoration: InputDecoration(
-                              labelText: 'Name',
-                              hintText: 'Please enter your name',
-                              prefixIcon: Icon(Icons.password),
-                              suffixIcon: Icon(Icons.check_circle),
-                              border: OutlineInputBorder(),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.blue),
-                              ),
-                            ),
-                            controller: _nameController,
-                          ),
-                        ],
+                        ),
+                        controller: _mailController,
                       ),
-                    TextButton(
-                      onPressed: _handleAuthentification,
-                      child: Text("Ch'ti parti !"),
-                    ),
-                  ],
+                      TextField(
+                        decoration: InputDecoration(
+                          labelText: 'Password',
+                          hintText: 'Please enter your password',
+                          prefixIcon: Icon(Icons.password),
+                          suffixIcon: Icon(Icons.check_circle),
+                          border: OutlineInputBorder(),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.blue),
+                          ),
+                        ),
+                        obscureText: true,
+                        controller: _passwordController,
+                      ),
+                      if (!_accountExists)
+                        Column(
+                          spacing: 10,
+                          children: [
+                            TextField(
+                              decoration: InputDecoration(
+                                labelText: 'Surname',
+                                hintText: 'Please enter your surname',
+                                prefixIcon: Icon(Icons.password),
+                                suffixIcon: Icon(Icons.check_circle),
+                                border: OutlineInputBorder(),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.blue),
+                                ),
+                              ),
+                              controller: _surnameController,
+                            ),
+                            TextField(
+                              decoration: InputDecoration(
+                                labelText: 'Name',
+                                hintText: 'Please enter your name',
+                                prefixIcon: Icon(Icons.password),
+                                suffixIcon: Icon(Icons.check_circle),
+                                border: OutlineInputBorder(),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.blue),
+                                ),
+                              ),
+                              controller: _nameController,
+                            ),
+                          ],
+                        ),
+                      TextButton(
+                        onPressed: _handleAuthentification,
+                        child: Text("Ch'ti parti !"),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
