@@ -50,18 +50,18 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBOxLscLdGrFOXfaEHgkK_5LmF77T7s8lo',
-    appId: '1:521959694805:web:d73516a3ecea730e811d5c',
-    messagingSenderId: '521959694805',
+    apiKey: 'your api key here',
+    appId: 'your app id here',
+    messagingSenderId: 'messaging sender id',
     projectId: 'chtifacebook',
     authDomain: 'chtifacebook.firebaseapp.com',
     storageBucket: 'chtifacebook.firebasestorage.app',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAEEt-cdYFP49ED6wVmFTfzieVbr6nfyGA',
-    appId: '1:521959694805:android:5917b0be2a1ff3f6811d5c',
-    messagingSenderId: '521959694805',
+    apiKey: 'your api key hereA',
+    appId: 'your app id here',
+    messagingSenderId: 'messaging sender id',
     projectId: 'chtifacebook',
     storageBucket: 'chtifacebook.firebasestorage.app',
   );
