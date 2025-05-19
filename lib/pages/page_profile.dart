@@ -85,7 +85,7 @@ class _PageProfilState extends State<PageProfil> {
           final indexToAdd = isMe ? 2 : 1;
 
           return ListView.builder(
-            itemCount: length + indexToAdd,
+            itemCount: length,
             itemBuilder: (context, index) {
               if (index == 0) {
                 return Column(

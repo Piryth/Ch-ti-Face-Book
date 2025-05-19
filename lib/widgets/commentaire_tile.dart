@@ -39,7 +39,7 @@ class CommentaireTile extends StatelessWidget {
               leading: Avatar(radius: 48, imageUrl: membre.profilePicture),
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [Text(membre.fullname), Text(FormatageDate().formatted(commentaire.date))],
+                children: [Text(membre.fullname), Text(FormatageDate().formatted(commentaire.date), style: TextStyle(color: Colors.grey, fontSize: 12))],
               ),
               subtitle: Text(commentaire.text),
             );

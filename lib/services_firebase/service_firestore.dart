@@ -81,7 +81,7 @@ class ServiceFirestore {
     return true;
   }
 
-  postForMember(String memberId) => firestorePost.where(memberIdKey, isEqualTo: memberId).snapshots();
+  postForMember(String memberId) => firestorePost.where(memberIdKey, isEqualTo: memberId).orderBy(dateKey, descending: true).snapshots();
 
   allMembers() => firestoreMember.snapshots();
 
