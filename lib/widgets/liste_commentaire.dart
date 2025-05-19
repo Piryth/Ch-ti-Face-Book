@@ -5,7 +5,6 @@ import 'package:chti_face_book/widgets/commentaire_tile.dart';
 import 'package:chti_face_book/widgets/widget_vide.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
 import '../util/constants.dart';
 import '../models/post.dart';
